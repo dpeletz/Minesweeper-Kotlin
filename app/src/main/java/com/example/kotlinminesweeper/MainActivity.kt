@@ -10,14 +10,4 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    val fieldMatrix: Array<Array<Field>> = arrayOf(
-        arrayOf(
-            Field(1, 5, true, true),
-            Field(2, 6, false, false)
-        ),
-        arrayOf(
-            Field(3, 7, true, true),
-            Field(4, 8, false, false)
-        )
-    )
 }

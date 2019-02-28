@@ -22,7 +22,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         R.drawable.gradient
     )
 
-
     init {
         paintBackground.color = Color.BLACK
         paintBackground.style = Paint.Style.FILL
@@ -46,7 +45,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        paintText.textSize = height / 3f
+        paintText.textSize = height / 5f
 
         bitmapBg = Bitmap.createScaledBitmap(
             bitmapBg, width, height, false
@@ -118,7 +117,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 //            }
 //        }
 //    }
-
 //    override fun onTouchEvent(event: MotionEvent?): Boolean {
 //        if (event?.action == MotionEvent.ACTION_DOWN) {
 //            val tX = event.x.toInt() / (width / 3)
