@@ -30,13 +30,13 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 8f
 
-        crossPaint.color = Color.RED
-        crossPaint.style = Paint.Style.STROKE
-        crossPaint.strokeWidth = 8f
-
-        circlePaint.color = Color.BLUE
-        circlePaint.style = Paint.Style.STROKE
-        circlePaint.strokeWidth = 8f
+//        crossPaint.color = Color.RED
+//        crossPaint.style = Paint.Style.STROKE
+//        crossPaint.strokeWidth = 8f
+//
+//        circlePaint.color = Color.BLUE
+//        circlePaint.style = Paint.Style.STROKE
+//        circlePaint.strokeWidth = 8f
 
         paintText.color = Color.RED
         paintText.textSize = 50f
@@ -57,11 +57,49 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
         canvas?.drawBitmap(bitmapBg, 0f, 0f, null)
 
-        canvas?.drawText("4", 0f, height / 5f, paintText)
-
         drawGameBoard(canvas)
 
+        displayNumberMines(canvas)
+
 //        drawPlayers(canvas)
+    }
+
+    //    override fun onTouchEvent(event: MotionEvent?): Boolean {
+//        if (event?.action == MotionEvent.ACTION_DOWN) {
+//            val tX = event.x.toInt() / (width / 5)
+//            val tY = event.y.toInt() / (height / 5)
+//
+//            if (tX < 5 && tY < 5 && !MinesweeperModel.fieldMatrix[tX][tY].isMine
+//            ) {
+//
+//                MinesweeperModel.setFieldContent(tX, tY, MinesweeperModel.nextPlayer)
+////                MinesweeperModel.checkResult(context)
+//
+//                invalidate()
+//            }
+//            else {
+//                // GAME OVER!
+//            }
+//        }
+//
+//        return true
+//    }
+//
+    private fun displayNumberMines(canvas: Canvas?) {
+        for (i in 0..5) {
+            for (j in 0..5) {
+//            if (!MinesweeperModel.fieldMatrix[i][j].isMine) {
+                canvas?.drawText(
+//                    "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
+                    "4",
+                    ((width / 5f) * i),
+                    ((height / 5f) * j),
+                    paintText
+                )
+//            }
+            }
+        }
+
     }
 
     private fun drawGameBoard(canvas: Canvas?) {

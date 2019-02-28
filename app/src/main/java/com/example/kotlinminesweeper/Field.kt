@@ -4,7 +4,7 @@ data class Field(var type: Int, var minesAround: Int, var isMine: Boolean,
                  var isFlagged: Boolean, var wasClicked: Boolean) {
 
     fun getNumberMinesAround(field: Field): Int {
-        return 0
+        return field.minesAround
     }
 
     fun flag(field: Field) {

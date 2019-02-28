@@ -8,13 +8,13 @@ object MinesweeperModel {
         arrayOf(
             Field(0, 5, false, false, false),
             Field(1, 5, false, false, false),
-            Field(2, 5, false, false, false),
+            Field(2, 5, true, false, false),
             Field(3, 5, false, false, false),
             Field(4, 6, false, false, false)
         ),
         arrayOf(
             Field(5, 7, false, false, false),
-            Field(6, 7, false, false, false),
+            Field(6, 7, true, false, false),
             Field(7, 7, false, false, false),
             Field(8, 7, false, false, false),
             Field(9, 8, false, false, false)
@@ -30,7 +30,7 @@ object MinesweeperModel {
             Field(15, 5, false, false, false),
             Field(16, 5, false, false, false),
             Field(17, 5, false, false, false),
-            Field(18, 5, false, false, false),
+            Field(18, 5, true, false, false),
             Field(19, 6, false, false, false)
         ),
         arrayOf(
@@ -45,6 +45,8 @@ object MinesweeperModel {
     fun plantMines(fieldMatrix: Array<Array<Field>>) {
 
     }
+
+//    public fun getNumberMinesAround(x: Int, y: Int) = fieldMatrix[x][y].getNumberMinesAround(fieldMatrix[x][y])
 
 }
 
