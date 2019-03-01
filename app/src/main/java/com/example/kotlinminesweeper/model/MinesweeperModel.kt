@@ -1,6 +1,6 @@
 package com.example.kotlinminesweeper.model
 
-import com.example.kotlinminesweeper.Field
+import com.example.kotlinminesweeper.data.Field
 
 object MinesweeperModel {
 
@@ -9,7 +9,7 @@ object MinesweeperModel {
             Field(0, 5, false, false, false),
             Field(1, 5, false, false, false),
             Field(2, 5, true, false, false),
-            Field(3, 5, false, false, false),
+            Field(3, 5, false, false, true),
             Field(4, 6, false, false, false)
         ),
         arrayOf(
@@ -23,7 +23,7 @@ object MinesweeperModel {
             Field(10, 5, false, false, false),
             Field(11, 5, false, false, false),
             Field(12, 5, false, false, false),
-            Field(13, 5, false, false, false),
+            Field(13, 5, false, false, true),
             Field(14, 6, false, false, false)
         ),
         arrayOf(
@@ -45,6 +45,9 @@ object MinesweeperModel {
     fun plantMines(fieldMatrix: Array<Array<Field>>) {
 
     }
+
+    public fun getFieldContent(x: Int, y: Int) = fieldMatrix[x][y].minesAround
+
 
 //    public fun getNumberMinesAround(x: Int, y: Int) = fieldMatrix[x][y].getNumberMinesAround(fieldMatrix[x][y])
 

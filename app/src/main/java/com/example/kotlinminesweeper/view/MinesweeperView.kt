@@ -16,7 +16,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     private val circlePaint = Paint()
     private val paintText = Paint()
 
-
     private var bitmapBg = BitmapFactory.decodeResource(
         resources,
         R.drawable.gradient
@@ -61,7 +60,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
         displayNumberMines(canvas)
 
-//        drawPlayers(canvas)
     }
 
     //    override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -86,21 +84,50 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 //    }
 //
     private fun displayNumberMines(canvas: Canvas?) {
-        for (i in 0..5) {
-            for (j in 0..5) {
-//            if (!MinesweeperModel.fieldMatrix[i][j].isMine) {
-                canvas?.drawText(
-//                    "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
-                    "4",
-                    ((width / 5f) * i),
-                    ((height / 5f) * j),
-                    paintText
-                )
-//            }
+        for (i in 0..4) {
+            for (j in 0..4) {
+                if (!MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
+                    canvas?.drawText(
+                        "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
+//                        "4",
+                        ((width / 5f) * i),
+                        ((height / 5f) * j),
+                        paintText
+                    )
+                }
             }
         }
-
     }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_DOWN) {
+            val tX = event.x.toInt() / (width / 5)
+            val tY = event.y.toInt() / (height / 5)
+
+            if (tX < 5 && tY < 5 && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine) {
+
+                MinesweeperModel.fieldMatrix[tX][tY].wasClicked = !MinesweeperModel.fieldMatrix[tX][tY].wasClicked
+
+                invalidate()
+
+//                var status = "Next player is X"
+//                if (TicTacToeModel.nextPlayer == TicTacToeModel.CIRCLE) {
+//                    status = "Next player is O"
+//                }
+//                (context as MainActivity).setStatusText(status)
+
+            }
+
+//            else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
+//                END GAME
+//            }
+
+            invalidate()
+        }
+        return true
+    }
+
+//}
 
     private fun drawGameBoard(canvas: Canvas?) {
         val fifthOfHeight = height / 5
