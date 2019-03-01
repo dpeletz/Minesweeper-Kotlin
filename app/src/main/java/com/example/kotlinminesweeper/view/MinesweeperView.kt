@@ -90,8 +90,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                     canvas?.drawText(
                         "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
 //                        "4",
-                        ((width / 5f) * i),
-                        ((height / 5f) * j),
+                        ((width / 5f) * (i)),
+                        ((height / 5f) * (j+1)),
                         paintText
                     )
                 }
