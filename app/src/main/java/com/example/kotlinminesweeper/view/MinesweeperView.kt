@@ -115,12 +115,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
                 invalidate()
 
-//                var status = "Next player is X"
-//                if (TicTacToeModel.nextPlayer == TicTacToeModel.CIRCLE) {
-//                    status = "Next player is O"
-//                }
-//                (context as MainActivity).setStatusText(status)
-
             } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
                 Toast.makeText(
                     context,
