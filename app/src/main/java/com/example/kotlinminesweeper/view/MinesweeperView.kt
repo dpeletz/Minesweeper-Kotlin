@@ -5,7 +5,9 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import com.example.kotlinminesweeper.R
+import com.example.kotlinminesweeper.data.Field
 import com.example.kotlinminesweeper.model.MinesweeperModel
 
 class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
@@ -91,7 +93,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                         "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
 //                        "4",
                         ((width / 5f) * (i)),
-                        ((height / 5f) * (j+1)),
+                        ((height / 5f) * (j + 1)),
                         paintText
                     )
                 }
@@ -116,15 +118,30 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 //                }
 //                (context as MainActivity).setStatusText(status)
 
+            } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
+                Toast.makeText(
+                    context,
+                    "You chose a mine... game over",
+                    Toast.LENGTH_LONG
+                ).show()
+                resetModel()
             }
-
-//            else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
-//                END GAME
-//            }
 
             invalidate()
         }
         return true
+    }
+
+    private fun resetModel() {
+//        MinesweeperModel.fieldMatrix = arrayOf(
+//            arrayOf(
+//                Field(0, 0, false, false, false),
+//                Field(1, 0, false, false, false),
+//                Field(2, 0, false, false, false),
+//                Field(3, 0, false, false, false),
+//                Field(4, 0, false, false, false)
+//            )
+//        )
     }
 
 //}
