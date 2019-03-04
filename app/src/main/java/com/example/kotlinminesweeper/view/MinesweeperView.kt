@@ -41,6 +41,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
         paintText.color = Color.RED
         paintText.textSize = 50f
+
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -86,6 +87,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 //    }
 //
     private fun displayNumberMines(canvas: Canvas?) {
+//        MinesweeperModel.fieldMatrix = MinesweeperModel.plantMines(MinesweeperModel.fieldMatrix, 3, 5)
+
         for (i in 0..4) {
             for (j in 0..4) {
                 if (!MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
@@ -125,14 +128,20 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                     Toast.LENGTH_LONG
                 ).show()
                 resetModel()
-            }
+//                invalidate()
 
+            }
             invalidate()
         }
         return true
     }
 
     private fun resetModel() {
+        var fieldMatrix =
+            Array<Array<Field>>(MinesweeperModel.numRowsAndColumns) { Array<Field>(MinesweeperModel.numRowsAndColumns) { Field(0, 0, false, false, false) } }
+
+        MinesweeperModel.fieldMatrix = MinesweeperModel.plantMines(fieldMatrix, 3, 5)
+
 //        MinesweeperModel.fieldMatrix = arrayOf(
 //            arrayOf(
 //                Field(0, 0, false, false, false),
