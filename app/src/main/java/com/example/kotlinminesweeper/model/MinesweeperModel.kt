@@ -6,41 +6,41 @@ import kotlin.random.Random
 object MinesweeperModel {
 
     var numRowsAndColumns = 5
+    var maxMines = 3
 
-    var fieldMatrix =
-        Array<Array<Field>>(numRowsAndColumns) { Array<Field>(numRowsAndColumns) { Field(0, 0, false, false, false) } }
+    var fieldMatrix = plantMines(Array<Array<Field>>(numRowsAndColumns) {
+        Array<Field>(numRowsAndColumns) {
+            Field(
+                0,
+                0,
+                false,
+                false,
+                false
+            )
+        }
+    }, maxMines, numRowsAndColumns)
 
-
-//    fun setTypes(fieldMatrix: Array<Array<Field>>) {
-//
-//        for (i in 0..4) {
-//            for (j in 0..4) {
-//                fieldMatrix[i][j].type = i + j
-//            }
-//
-//        }
-//
-//    }
-
-//    void placeMines(int mines[][2], char realBoard[][MAXSIDE])
-//    {
-//        bool mark[MAXSIDE*MAXSIDE];
-//
-//        memset (mark, false, sizeof (mark));
-//
-//        // Continue until all random mines have been created.
-//
-//        return;
-//    }
-
+    fun resetFieldMatrix() {
+        fieldMatrix = plantMines(Array<Array<Field>>(numRowsAndColumns) {
+            Array<Field>(numRowsAndColumns) {
+                Field(
+                    0,
+                    0,
+                    false,
+                    false,
+                    false
+                )
+            }
+        }, maxMines, numRowsAndColumns)
+    }
 
     fun plantMines(fieldMatrix: Array<Array<Field>>, maxMines: Int, numRowsAndColumns: Int): Array<Array<Field>> {
 
-        for (i in 0..maxMines-1) {
+        for (i in 0..(maxMines - 1)) {
 
-            var random = Random.nextInt((numRowsAndColumns * numRowsAndColumns))
-            var randRow = random / numRowsAndColumns
-            var randCol = random.rem(numRowsAndColumns)
+            val random = Random.nextInt((numRowsAndColumns * numRowsAndColumns))
+            val randRow = random / numRowsAndColumns
+            val randCol = random.rem(numRowsAndColumns)
 
             if (!fieldMatrix[randRow][randCol].isMine) {
 
@@ -78,12 +78,19 @@ object MinesweeperModel {
                 if (isValid(randRow + 1, randCol + 1, numRowsAndColumns)) {
                     fieldMatrix[randRow + 1][randCol + 1].minesAround =
                         fieldMatrix[randRow + 1][randCol + 1].minesAround + 1
-
                 }
             }
         }
         return fieldMatrix
     }
+
+    fun isValid(row: Int, col: Int, numRowsAndColumns: Int): Boolean {
+        return (row >= 0) && (row < numRowsAndColumns) &&
+                (col >= 0) && (col < numRowsAndColumns)
+    }
+
+}
+
 
 //        while (totalCurrentMines < maxMines) {
 //            var randRow = Random.nextInt(numRowsAndColumns)
@@ -113,19 +120,13 @@ object MinesweeperModel {
 //                    fieldMatrix[randRow][randCol + 1].minesAround = fieldMatrix[randRow][randCol + 1].minesAround + 1
 //                }
 
-    //                totalCurrentMines += 1
-    fun isValid(row: Int, col: Int, numRowsAndColumns: Int): Boolean {
-        return (row >= 0) && (row < numRowsAndColumns) &&
-                (col >= 0) && (col < numRowsAndColumns)
-    }
+//                totalCurrentMines += 1
 
 //    public fun getNumberMinesAround(x: Int, y: Int, numRowsAndColumns: Int): Int {
 //        if (x < numRowsAndColumns - 1)
 //            fieldMatrix[x][y].getNumberMinesAround(fieldMatrix[x][y])
 //        return 3
 //    }
-
-}
 
 
 //    public fun getFieldContent(x: Int, y: Int) = fieldMatrix[x][y].minesAround

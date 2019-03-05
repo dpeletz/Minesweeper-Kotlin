@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Kotlin Minesweeper</string>
+    <string name="game_over">You chose a mine… game over</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+
 </resources>

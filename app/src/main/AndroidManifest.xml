@@ -16,6 +16,21 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-    </application>
 
-</manifest>
+        <activity android:name=".MinesweeperActivity"
+                  android:label="Details screen">
+        <!--android:icon="@drawable/ic_start">-->
+
+        <intent-filter>
+
+            <action android:name="android.intent.action.MAIN"/>
+
+            <category android:name="android.intent.category.LAUNCHER"/>
+
+        </intent-filter>
+
+    </activity>
+
+</application>
+
+        </manifest>
