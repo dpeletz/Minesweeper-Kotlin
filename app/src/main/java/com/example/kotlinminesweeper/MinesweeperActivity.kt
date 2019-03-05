@@ -10,8 +10,8 @@ class MinesweeperActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_minesweeper)
 
-        val txtHello : TextView = findViewById(R.id.txt_welcome)
-        txtHello.setText("Welcome to the level!")
+        val txtWelcome : TextView = findViewById(R.id.txt_welcome)
+        txtWelcome.setText("Welcome to the level!")
 
     }
 }
