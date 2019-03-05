@@ -16,10 +16,10 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     private val paintLine = Paint()
     private val paintText = Paint()
 
-    private var flag = BitmapFactory.decodeResource(
-        resources,
-        R.drawable.gradient
-    )
+//    private var flag = BitmapFactory.decodeResource(
+//        resources,
+//        R.drawable.gradient
+//    )
 
     init {
         paintBackground.color = resources.getColor(R.color.grey)

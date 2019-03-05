@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val btnEasyActivity: Button = findViewById(R.id.btn_easy)
+        val btnMediumActivity: Button = findViewById(R.id.btn_medium)
+        val btnHardActivity: Button = findViewById(R.id.btn_hard)
 
         btnEasyActivity.setOnClickListener {
             MinesweeperModel.numRowsAndColumns = 5
@@ -22,24 +24,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(easyIntent)
         }
 
-        val btnMediumActivity: Button = findViewById(R.id.btn_medium)
-
         btnMediumActivity.setOnClickListener {
             MinesweeperModel.numRowsAndColumns = 6
-            MinesweeperModel.maxMines = 5
+            MinesweeperModel.maxMines = 6
             MinesweeperModel.resetFieldMatrix()
             val mediumIntent = Intent(this, MinesweeperActivity::class.java)
             startActivity(mediumIntent)
-
         }
-
-        val btnHardActivity: Button = findViewById(R.id.btn_hard)
 
         btnHardActivity.setOnClickListener {
             MinesweeperModel.numRowsAndColumns = 7
-            MinesweeperModel.maxMines = 7
+            MinesweeperModel.maxMines = 9
             MinesweeperModel.resetFieldMatrix()
-
             val hardIntent = Intent(this, MinesweeperActivity::class.java)
             startActivity(hardIntent)
         }

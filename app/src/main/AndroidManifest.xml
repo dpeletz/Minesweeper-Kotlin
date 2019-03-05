@@ -18,7 +18,7 @@
         </activity>
 
         <activity android:name=".MinesweeperActivity"
-                  android:label="Details screen">
+                  android:label="Minesweeper Screen">
         <!--android:icon="@drawable/ic_start">-->
 
         <intent-filter>
