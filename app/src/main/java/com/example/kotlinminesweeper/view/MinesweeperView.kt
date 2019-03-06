@@ -16,10 +16,10 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     private val paintLine = Paint()
     private val paintText = Paint()
 
-//    private var flag = BitmapFactory.decodeResource(
-//        resources,
-//        R.drawable.gradient
-//    )
+    private var flag = BitmapFactory.decodeResource(
+        resources,
+        R.drawable.gradient
+    )
 
     init {
         paintBackground.color = resources.getColor(R.color.grey)
@@ -40,10 +40,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintBackground)
-//        bitmapBg = Bitmap.createScaledBitmap(
-//            bitmapBg, width, height, false
-//        )
-//        canvas?.drawBitmap(bitmapBg, 0f, 0f, null)
 
         drawGameBoard(canvas)
         displayNumberMines(canvas)
@@ -59,26 +55,24 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                 paintText
             )
         } else if (MinesweeperModel.fieldMatrix[i][j].isFlagged) {
-            canvas?.drawText(
-                "-1",
-                (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
-                ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
-                paintText
+            flag = Bitmap.createScaledBitmap(
+                flag, width / MinesweeperModel.numRowsAndColumns, height / MinesweeperModel.numRowsAndColumns, false
             )
-        }
-
-    }
-//    private fun drawClickedFields(canvas: Canvas?, i: Int, j: Int) {
-//        if (!MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
+            canvas?.drawBitmap(
+                flag,
+                ((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i)),
+                (((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j))),
+                null
+            )
 //            canvas?.drawText(
-//                "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
+//                "-1",
 //                (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
 //                ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
 //                paintText
 //            )
-//        }
-//
-//    }
+        }
+
+    }
 
     private fun displayNumberMines(canvas: Canvas?) {
         for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
@@ -100,7 +94,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
             } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
                 Toast.makeText(
                     context,
-                    "You chose a mine... game over!",
+                    resources.getString(R.string.game_over),
                     Toast.LENGTH_LONG
                 ).show()
                 resetModel()
@@ -113,7 +107,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         if (MinesweeperModel.flagMode) {
 
             if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked) {
-                //TODO: FIGURE OUT LOGIC FOR FLAGGING A MINE
 //            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine) {
 
                 MinesweeperModel.fieldMatrix[tX][tY].isFlagged = !MinesweeperModel.fieldMatrix[tX][tY].isFlagged
