@@ -7,6 +7,7 @@ object MinesweeperModel {
 
     var numRowsAndColumns = 5
     var maxMines = 3
+    var flagMode = false
 
     var fieldMatrix = plantMines(Array<Array<Field>>(numRowsAndColumns) {
         Array<Field>(numRowsAndColumns) {
@@ -94,6 +95,11 @@ object MinesweeperModel {
         return (row >= 0) && (row < numRowsAndColumns) &&
                 (col >= 0) && (col < numRowsAndColumns)
     }
+
+    fun toggleFlagMode() {
+        flagMode = !flagMode
+    }
+
 
 }
 

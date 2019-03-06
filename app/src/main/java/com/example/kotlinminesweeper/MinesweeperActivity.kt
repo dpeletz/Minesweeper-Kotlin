@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
+import com.example.kotlinminesweeper.model.MinesweeperModel
+import com.example.kotlinminesweeper.view.MinesweeperView
 import kotlinx.android.synthetic.main.activity_minesweeper.*
 
 
@@ -13,17 +15,18 @@ class MinesweeperActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_minesweeper)
 
-        val txtWelcome: TextView = findViewById(R.id.txt_welcome)
-        txtWelcome.setText("Welcome to the level!")
+//        val txtWelcome: TextView = findViewById(R.id.txt_welcome)
+//        txtWelcome.setText("Welcome to the level!")
 
         switch_button.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-//                text_view.text = "Flag Mode On"
                 Toast.makeText(
                     this,
                     "Flag Mode On",
                     Toast.LENGTH_LONG
                 ).show()
+
+                MinesweeperModel.toggleFlagMode()
 
             } else {
                 Toast.makeText(
@@ -31,7 +34,8 @@ class MinesweeperActivity : AppCompatActivity() {
                     "Flag Mode Off",
                     Toast.LENGTH_LONG
                 ).show()
-//                text_view.text = ""
+
+                MinesweeperModel.toggleFlagMode()
             }
         }
 

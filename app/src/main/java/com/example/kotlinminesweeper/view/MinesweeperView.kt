@@ -50,7 +50,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     }
 
-    private fun drawClickedFields(canvas: Canvas?, i: Int, j: Int) {
+    private fun drawFields(canvas: Canvas?, i: Int, j: Int) {
         if (!MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
             canvas?.drawText(
                 "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
@@ -58,41 +58,95 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                 ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
                 paintText
             )
+        } else if (MinesweeperModel.fieldMatrix[i][j].isFlagged) {
+            canvas?.drawText(
+                "-1",
+                (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
+                ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
+                paintText
+            )
         }
 
     }
+//    private fun drawClickedFields(canvas: Canvas?, i: Int, j: Int) {
+//        if (!MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
+//            canvas?.drawText(
+//                "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
+//                (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
+//                ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
+//                paintText
+//            )
+//        }
+//
+//    }
 
     private fun displayNumberMines(canvas: Canvas?) {
         for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
             for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
-                drawClickedFields(canvas, i, j)
+                drawFields(canvas, i, j)
             }
         }
     }
 
     private fun markFieldAsClicked(tX: Int, tY: Int) {
-        if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine) {
+        if (!MinesweeperModel.flagMode) {
 
-            MinesweeperModel.fieldMatrix[tX][tY].wasClicked = !MinesweeperModel.fieldMatrix[tX][tY].wasClicked
+            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
+
+                MinesweeperModel.fieldMatrix[tX][tY].wasClicked = !MinesweeperModel.fieldMatrix[tX][tY].wasClicked
+
+                invalidate()
+
+            } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
+                Toast.makeText(
+                    context,
+                    "You chose a mine... game over!",
+                    Toast.LENGTH_LONG
+                ).show()
+                resetModel()
+            }
+            invalidate()
+        }
+    }
+
+    private fun markFieldAsFlagged(tX: Int, tY: Int) {
+        if (MinesweeperModel.flagMode) {
+
+            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked) {
+                //TODO: FIGURE OUT LOGIC FOR FLAGGING A MINE
+//            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine) {
+
+                MinesweeperModel.fieldMatrix[tX][tY].isFlagged = !MinesweeperModel.fieldMatrix[tX][tY].isFlagged
+
+                invalidate()
+
+//            } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
+//                Toast.makeText(
+//                    context,
+//                    "You tried to flag a mine... game over!",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                resetModel()
+            }
 
             invalidate()
-        } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
-            Toast.makeText(
-                context,
-                "You chose a mine... game over!",
-                Toast.LENGTH_LONG
-            ).show()
-            resetModel()
+
         }
-        invalidate()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event?.action == MotionEvent.ACTION_DOWN) {
+        if (event?.action == MotionEvent.ACTION_DOWN && !MinesweeperModel.flagMode) {
             markFieldAsClicked(
                 (event.x.toInt() / (width / MinesweeperModel.numRowsAndColumns)),
                 (event.y.toInt() / (height / MinesweeperModel.numRowsAndColumns))
             )
+        } else if (event?.action == MotionEvent.ACTION_DOWN && MinesweeperModel.flagMode) {
+
+            markFieldAsFlagged(
+                (event.x.toInt() / (width / MinesweeperModel.numRowsAndColumns)),
+                (event.y.toInt() / (height / MinesweeperModel.numRowsAndColumns))
+            )
+
         }
         return true
     }
