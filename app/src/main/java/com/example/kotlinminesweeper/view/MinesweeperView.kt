@@ -47,10 +47,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintBackground)
-
         drawGameBoard(canvas)
         displayNumberMines(canvas)
-
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -69,7 +67,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         } else if (MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
             finishGame(canvas)
         }
-
     }
 
     private fun finishGame(canvas: Canvas?) {
@@ -142,12 +139,9 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                         resetFlag()
                         drawMine(canvas, i, j)
                     }
-
                 }
             }
-
         }
-
     }
 
     private fun drawMine(canvas: Canvas?, i: Int, j: Int) {
@@ -161,18 +155,12 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     private fun markFieldAsFlagged(tX: Int, tY: Int) {
         if (MinesweeperModel.flagMode) {
-
             if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked) {
 //            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine) {
-
                 MinesweeperModel.fieldMatrix[tX][tY].isFlagged = !MinesweeperModel.fieldMatrix[tX][tY].isFlagged
-
                 invalidate()
-
             }
-
             invalidate()
-
         }
     }
 
@@ -251,8 +239,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintLine)
         drawLines(canvas)
     }
-
-
 }
 
 

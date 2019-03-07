@@ -12,32 +12,43 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnEasyActivity: Button = findViewById(R.id.btn_easy)
-        val btnMediumActivity: Button = findViewById(R.id.btn_medium)
-        val btnHardActivity: Button = findViewById(R.id.btn_hard)
+        startEasyGame()
+        startMediumGame()
+        startHardGame()
+    }
 
+    private fun startEasyGame() {
+        val btnEasyActivity: Button = findViewById(R.id.btn_easy)
+        val easyIntent = Intent(this, MinesweeperActivity::class.java)
         btnEasyActivity.setOnClickListener {
             MinesweeperModel.numRowsAndColumns = 5
             MinesweeperModel.maxMines = 3
             MinesweeperModel.resetFieldMatrix()
-            val easyIntent = Intent(this, MinesweeperActivity::class.java)
             startActivity(easyIntent)
         }
+    }
 
+    private fun startMediumGame() {
+        val btnMediumActivity: Button = findViewById(R.id.btn_medium)
+        val mediumIntent = Intent(this, MinesweeperActivity::class.java)
         btnMediumActivity.setOnClickListener {
             MinesweeperModel.numRowsAndColumns = 6
             MinesweeperModel.maxMines = 6
             MinesweeperModel.resetFieldMatrix()
-            val mediumIntent = Intent(this, MinesweeperActivity::class.java)
             startActivity(mediumIntent)
         }
+    }
 
+    private fun startHardGame() {
+        val btnHardActivity: Button = findViewById(R.id.btn_hard)
+        val hardIntent = Intent(this, MinesweeperActivity::class.java)
         btnHardActivity.setOnClickListener {
             MinesweeperModel.numRowsAndColumns = 7
             MinesweeperModel.maxMines = 9
             MinesweeperModel.resetFieldMatrix()
-            val hardIntent = Intent(this, MinesweeperActivity::class.java)
             startActivity(hardIntent)
         }
     }
+
+
 }

@@ -35,16 +35,20 @@ object MinesweeperModel {
         }, maxMines, numRowsAndColumns)
     }
 
-
     private fun incrementMinesAround(
         fieldMatrix: Array<Array<Field>>,
         numRowsAndColumns: Int
     ) {
-
         val random = Random.nextInt(numRowsAndColumns * numRowsAndColumns)
-        val randRow = random / numRowsAndColumns
-        val randCol = random.rem(numRowsAndColumns)
+        countMinesAround(fieldMatrix, random / numRowsAndColumns, random.rem(numRowsAndColumns), numRowsAndColumns)
+    }
 
+    private fun countMinesAround(
+        fieldMatrix: Array<Array<Field>>,
+        randRow: Int,
+        randCol: Int,
+        numRowsAndColumns: Int
+    ) {
         if (!fieldMatrix[randRow][randCol].isMine) {
             fieldMatrix[randRow][randCol].isMine = !fieldMatrix[randRow][randCol].isMine
 
@@ -100,56 +104,4 @@ object MinesweeperModel {
         flagMode = !flagMode
     }
 
-
 }
-
-
-//        while (totalCurrentMines < maxMines) {
-//            var randRow = Random.nextInt(numRowsAndColumns)
-//            var randCol = Random.nextInt(numRowsAndColumns)
-//
-//                }
-
-//                if (randRow < numRowsAndColumns - 1 && randRow > 0) {
-//                    fieldMatrix[randRow - 1][randCol].minesAround = fieldMatrix[randRow - 1][randCol].minesAround + 1
-//                    fieldMatrix[randRow + 1][randCol].minesAround = fieldMatrix[randRow + 1][randCol].minesAround + 1
-//
-//                } else if (randRow <= numRowsAndColumns) {
-//                    fieldMatrix[randRow - 1][randCol].minesAround = fieldMatrix[randRow - 1][randCol].minesAround + 1
-//
-//                } else if (randRow >= 0) {
-//                    fieldMatrix[randRow + 1][randCol].minesAround = fieldMatrix[randRow + 1][randCol].minesAround + 1
-//                }
-//
-//                if (randCol < numRowsAndColumns - 1 && randCol > 0) {
-//                    fieldMatrix[randRow][randCol - 1].minesAround = fieldMatrix[randRow][randCol - 1].minesAround + 1
-//                    fieldMatrix[randRow][randCol + 1].minesAround = fieldMatrix[randRow][randCol + 1].minesAround + 1
-//
-//                } else if (randCol <= numRowsAndColumns) {
-//                    fieldMatrix[randRow][randCol - 1].minesAround = fieldMatrix[randRow][randCol - 1].minesAround + 1
-//
-//                } else if (randCol >= 0) {
-//                    fieldMatrix[randRow][randCol + 1].minesAround = fieldMatrix[randRow][randCol + 1].minesAround + 1
-//                }
-
-//                totalCurrentMines += 1
-
-//    public fun getNumberMinesAround(x: Int, y: Int, numRowsAndColumns: Int): Int {
-//        if (x < numRowsAndColumns - 1)
-//            fieldMatrix[x][y].getNumberMinesAround(fieldMatrix[x][y])
-//        return 3
-//    }
-
-
-//    public fun getFieldContent(x: Int, y: Int) = fieldMatrix[x][y].minesAround
-
-
-//    public fun resetModel() {
-//        for (i in 0..4) {
-//            for (j in 0..4) {
-//                fieldMatrix[i][j] = Field(type = EMPTY.toInt())
-//            }
-//        }
-//    }
-
-
