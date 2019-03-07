@@ -2,13 +2,14 @@ package com.example.kotlinminesweeper.view
 
 import android.content.Context
 import android.graphics.*
+import android.support.design.widget.Snackbar
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 import com.example.kotlinminesweeper.R
 import com.example.kotlinminesweeper.data.Field
 import com.example.kotlinminesweeper.model.MinesweeperModel
+import kotlinx.android.synthetic.main.activity_minesweeper.view.*
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -70,10 +71,10 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     }
 
     private fun finishGame(canvas: Canvas?) {
-        Toast.makeText(
-            context,
+        Snackbar.make(
+            minesweeperView,
             resources.getString(R.string.game_over),
-            Toast.LENGTH_LONG
+            Snackbar.LENGTH_LONG
         ).show()
         showMines(canvas)
         Timer().schedule(2000) {

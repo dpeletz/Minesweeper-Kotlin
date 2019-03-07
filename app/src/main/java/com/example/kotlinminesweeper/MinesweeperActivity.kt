@@ -3,10 +3,7 @@ package com.example.kotlinminesweeper
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.widget.TextView
-import android.widget.Toast
 import com.example.kotlinminesweeper.model.MinesweeperModel
-import com.example.kotlinminesweeper.view.MinesweeperView
 import kotlinx.android.synthetic.main.activity_minesweeper.*
 
 
