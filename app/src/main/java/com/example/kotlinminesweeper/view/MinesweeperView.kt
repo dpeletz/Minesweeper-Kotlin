@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.example.kotlinminesweeper.R
 import com.example.kotlinminesweeper.data.Field
 import com.example.kotlinminesweeper.model.MinesweeperModel
+import java.util.*
+import kotlin.concurrent.schedule
 
 class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -18,7 +20,12 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     private var flag = BitmapFactory.decodeResource(
         resources,
-        R.drawable.gradient
+        R.drawable.flag
+    )
+
+    private var mine = BitmapFactory.decodeResource(
+        resources,
+        R.drawable.mine
     )
 
     init {
@@ -29,7 +36,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 8f
 
-        paintText.color = Color.RED
+        paintText.color = resources.getColor(R.color.navy)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -46,32 +53,57 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val w = View.MeasureSpec.getSize(widthMeasureSpec)
+        val h = View.MeasureSpec.getSize(heightMeasureSpec)
+        val d = if (w == 0) h else if (h == 0) w else if (w < h) w else h
+
+        setMeasuredDimension(d, d)
+    }
+
     private fun drawFields(canvas: Canvas?, i: Int, j: Int) {
         if (!MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
-            canvas?.drawText(
-                "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
-                (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
-                ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
-                paintText
-            )
+            drawNumberSurroundingMines(canvas, i, j)
         } else if (MinesweeperModel.fieldMatrix[i][j].isFlagged) {
-            flag = Bitmap.createScaledBitmap(
-                flag, width / MinesweeperModel.numRowsAndColumns, height / MinesweeperModel.numRowsAndColumns, false
-            )
-            canvas?.drawBitmap(
-                flag,
-                ((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i)),
-                (((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j))),
-                null
-            )
-//            canvas?.drawText(
-//                "-1",
-//                (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
-//                ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
-//                paintText
-//            )
+            drawFlag(canvas, i, j)
+        } else if (MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
+            finishGame(canvas)
         }
 
+    }
+
+    private fun finishGame(canvas: Canvas?) {
+        Toast.makeText(
+            context,
+            resources.getString(R.string.game_over),
+            Toast.LENGTH_LONG
+        ).show()
+        showMines(canvas)
+        Timer().schedule(2000) {
+            resetModel()
+            invalidate()
+        }
+    }
+
+    private fun drawFlag(canvas: Canvas?, i: Int, j: Int) {
+        flag = Bitmap.createScaledBitmap(
+            flag, width / MinesweeperModel.numRowsAndColumns, height / MinesweeperModel.numRowsAndColumns, false
+        )
+        canvas?.drawBitmap(
+            flag,
+            ((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i)),
+            (((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j))),
+            null
+        )
+    }
+
+    private fun drawNumberSurroundingMines(canvas: Canvas?, i: Int, j: Int) {
+        canvas?.drawText(
+            "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
+            (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
+            ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
+            paintText
+        )
     }
 
     private fun displayNumberMines(canvas: Canvas?) {
@@ -84,23 +116,47 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     private fun markFieldAsClicked(tX: Int, tY: Int) {
         if (!MinesweeperModel.flagMode) {
-
-            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isMine && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
-
+            if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
                 MinesweeperModel.fieldMatrix[tX][tY].wasClicked = !MinesweeperModel.fieldMatrix[tX][tY].wasClicked
-
                 invalidate()
-
-            } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
-                Toast.makeText(
-                    context,
-                    resources.getString(R.string.game_over),
-                    Toast.LENGTH_LONG
-                ).show()
-                resetModel()
             }
             invalidate()
         }
+    }
+
+    private fun resetFlag() {
+        flag.eraseColor(Color.TRANSPARENT)
+    }
+
+    private fun showMines(canvas: Canvas?) {
+        mine = Bitmap.createScaledBitmap(
+            mine, width / MinesweeperModel.numRowsAndColumns, height / MinesweeperModel.numRowsAndColumns, false
+        )
+        for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
+            for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
+                if (MinesweeperModel.fieldMatrix[i][j].isMine) {
+                    if (!MinesweeperModel.fieldMatrix[i][j].isFlagged) {
+//                        resetFlag()
+                        drawMine(canvas, i, j)
+                    } else {
+                        resetFlag()
+                        drawMine(canvas, i, j)
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+    private fun drawMine(canvas: Canvas?, i: Int, j: Int) {
+        canvas?.drawBitmap(
+            mine,
+            ((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i)),
+            (((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j))),
+            null
+        )
     }
 
     private fun markFieldAsFlagged(tX: Int, tY: Int) {
@@ -113,13 +169,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
                 invalidate()
 
-//            } else if (MinesweeperModel.fieldMatrix[tX][tY].isMine) {
-//                Toast.makeText(
-//                    context,
-//                    "You tried to flag a mine... game over!",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//                resetModel()
             }
 
             invalidate()
@@ -134,12 +183,10 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
                 (event.y.toInt() / (height / MinesweeperModel.numRowsAndColumns))
             )
         } else if (event?.action == MotionEvent.ACTION_DOWN && MinesweeperModel.flagMode) {
-
             markFieldAsFlagged(
                 (event.x.toInt() / (width / MinesweeperModel.numRowsAndColumns)),
                 (event.y.toInt() / (height / MinesweeperModel.numRowsAndColumns))
             )
-
         }
         return true
     }
@@ -161,6 +208,11 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         MinesweeperModel.fieldMatrix =
             MinesweeperModel.plantMines(fieldMatrix, MinesweeperModel.maxMines, MinesweeperModel.numRowsAndColumns)
 
+        flag = BitmapFactory.decodeResource(
+            resources,
+            R.drawable.flag
+        )
+
     }
 
 
@@ -169,34 +221,35 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         val widthOverRows = width / MinesweeperModel.numRowsAndColumns
 
         for (i in 0..MinesweeperModel.numRowsAndColumns) {
-            canvas?.drawLine(
-                0f,
-                (i * heightOverCols).toFloat(),
-                width.toFloat(),
-                (i * heightOverCols).toFloat(),
-                paintLine
-            )
-            canvas?.drawLine(
-                (i * widthOverRows).toFloat(),
-                0f,
-                (i * widthOverRows).toFloat(),
-                height.toFloat(),
-                paintLine
-            )
+            drawGrid(canvas, i, heightOverCols, widthOverRows)
         }
+    }
+
+    private fun drawGrid(
+        canvas: Canvas?,
+        i: Int,
+        heightOverCols: Int,
+        widthOverRows: Int
+    ) {
+        canvas?.drawLine(
+            0f,
+            (i * heightOverCols).toFloat(),
+            width.toFloat(),
+            (i * heightOverCols).toFloat(),
+            paintLine
+        )
+        canvas?.drawLine(
+            (i * widthOverRows).toFloat(),
+            0f,
+            (i * widthOverRows).toFloat(),
+            height.toFloat(),
+            paintLine
+        )
     }
 
     private fun drawGameBoard(canvas: Canvas?) {
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintLine)
         drawLines(canvas)
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val w = View.MeasureSpec.getSize(widthMeasureSpec)
-        val h = View.MeasureSpec.getSize(heightMeasureSpec)
-        val d = if (w == 0) h else if (h == 0) w else if (w < h) w else h
-
-        setMeasuredDimension(d, d)
     }
 
 

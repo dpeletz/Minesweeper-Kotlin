@@ -22,7 +22,7 @@ class MinesweeperActivity : AppCompatActivity() {
             if (isChecked) {
                 Toast.makeText(
                     this,
-                    "Flag Mode On",
+                    resources.getString(R.string.flag_mode_on),
                     Toast.LENGTH_LONG
                 ).show()
 
@@ -31,7 +31,7 @@ class MinesweeperActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(
                     this,
-                    "Flag Mode Off",
+                    resources.getString(R.string.flag_mode_off),
                     Toast.LENGTH_LONG
                 ).show()
 
