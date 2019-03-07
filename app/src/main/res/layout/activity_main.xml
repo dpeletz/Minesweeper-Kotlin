@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center_vertical"
         tools:context=".MainActivity"
         android:background="@color/colorPrimaryLight">
 
@@ -14,27 +15,29 @@
                   android:orientation="horizontal"
                   android:layout_marginTop="40dp"
                   android:layout_marginBottom="40dp"
+                  style="?android:attr/buttonBarButtonStyle"
                   android:gravity="center_horizontal">
         <Button
                 android:id="@+id/btn_easy"
                 android:text="@string/easy"
+                android:textColor="@color/colorSecondaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <Button
                 android:id="@+id/btn_medium"
                 android:text="@string/medium"
+                android:textColor="@color/colorSecondaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <Button
                 android:id="@+id/btn_hard"
                 android:text="@string/hard"
+                android:textColor="@color/colorSecondaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-
     </LinearLayout>
-
 
 </LinearLayout>

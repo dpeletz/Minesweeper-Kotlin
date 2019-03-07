@@ -29,56 +29,50 @@ object MinesweeperModel {
         }, maxMines, numRowsAndColumns)
     }
 
-    private fun incrementMinesAround(
-        fieldMatrix: Array<Array<Field>>,
-        numRowsAndColumns: Int
-    ) {
+    private fun incrementMinesAround(fieldMatrix: Array<Array<Field>>, numRowsAndColumns: Int) {
         val random = Random.nextInt(numRowsAndColumns * numRowsAndColumns)
         countMinesAround(fieldMatrix, random / numRowsAndColumns, random.rem(numRowsAndColumns), numRowsAndColumns)
     }
 
-    private fun countMinesAround(
-        fieldMatrix: Array<Array<Field>>,
-        randRow: Int,
-        randCol: Int,
-        numRowsAndColumns: Int
-    ) {
+    private fun countMinesAround(fieldMatrix: Array<Array<Field>>, randRow: Int, randCol: Int, numRowsAndColumns: Int) {
         if (!fieldMatrix[randRow][randCol].isMine) {
             fieldMatrix[randRow][randCol].isMine = !fieldMatrix[randRow][randCol].isMine
+            incrementMineCountByColumn(randRow, randCol, numRowsAndColumns, fieldMatrix)
+            incrementMineCountByColumn(randRow, randCol + 1, numRowsAndColumns, fieldMatrix)
+            incrementMineCountByRow(randRow, randCol, numRowsAndColumns, fieldMatrix)
+            incrementMineCountByColumn(randRow, randCol - 1, numRowsAndColumns, fieldMatrix)
+        }
+    }
 
-            if (isValid(randRow - 1, randCol, numRowsAndColumns)) {
-                fieldMatrix[randRow - 1][randCol].minesAround =
-                    fieldMatrix[randRow - 1][randCol].minesAround + 1
-            }
-            if (isValid(randRow + 1, randCol, numRowsAndColumns)) {
-                fieldMatrix[randRow + 1][randCol].minesAround =
-                    fieldMatrix[randRow + 1][randCol].minesAround + 1
-            }
+    private fun incrementMineCountByRow(
+        randRow: Int,
+        randCol: Int,
+        numRowsAndColumns: Int,
+        fieldMatrix: Array<Array<Field>>
+    ) {
+        if (isValid(randRow, randCol - 1, numRowsAndColumns)) {
+            fieldMatrix[randRow][randCol - 1].minesAround =
+                fieldMatrix[randRow][randCol - 1].minesAround + 1
+        }
+        if (isValid(randRow, randCol + 1, numRowsAndColumns)) {
+            fieldMatrix[randRow][randCol + 1].minesAround =
+                fieldMatrix[randRow][randCol + 1].minesAround + 1
+        }
+    }
 
-            if (isValid(randRow, randCol + 1, numRowsAndColumns)) {
-                fieldMatrix[randRow][randCol + 1].minesAround =
-                    fieldMatrix[randRow][randCol + 1].minesAround + 1
-            }
-            if (isValid(randRow, randCol - 1, numRowsAndColumns)) {
-                fieldMatrix[randRow][randCol - 1].minesAround =
-                    fieldMatrix[randRow][randCol - 1].minesAround + 1
-            }
-            if (isValid(randRow + 1, randCol - 1, numRowsAndColumns)) {
-                fieldMatrix[randRow + 1][randCol - 1].minesAround =
-                    fieldMatrix[randRow + 1][randCol - 1].minesAround + 1
-            }
-            if (isValid(randRow - 1, randCol + 1, numRowsAndColumns)) {
-                fieldMatrix[randRow - 1][randCol + 1].minesAround =
-                    fieldMatrix[randRow - 1][randCol + 1].minesAround + 1
-            }
-            if (isValid(randRow - 1, randCol - 1, numRowsAndColumns)) {
-                fieldMatrix[randRow - 1][randCol - 1].minesAround =
-                    fieldMatrix[randRow - 1][randCol - 1].minesAround + 1
-            }
-            if (isValid(randRow + 1, randCol + 1, numRowsAndColumns)) {
-                fieldMatrix[randRow + 1][randCol + 1].minesAround =
-                    fieldMatrix[randRow + 1][randCol + 1].minesAround + 1
-            }
+    private fun incrementMineCountByColumn(
+        randRow: Int,
+        randCol: Int,
+        numRowsAndColumns: Int,
+        fieldMatrix: Array<Array<Field>>
+    ) {
+        if (isValid(randRow - 1, randCol, numRowsAndColumns)) {
+            fieldMatrix[randRow - 1][randCol].minesAround =
+                fieldMatrix[randRow - 1][randCol].minesAround + 1
+        }
+        if (isValid(randRow + 1, randCol, numRowsAndColumns)) {
+            fieldMatrix[randRow + 1][randCol].minesAround =
+                fieldMatrix[randRow + 1][randCol].minesAround + 1
         }
     }
 

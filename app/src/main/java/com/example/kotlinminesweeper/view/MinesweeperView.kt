@@ -30,14 +30,14 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     )
 
     init {
-        paintBackground.color = resources.getColor(R.color.colorSecondaryLight)
+        paintBackground.color = resources.getColor(R.color.colorMinesweeper)
         paintBackground.style = Paint.Style.FILL
 
-        paintLine.color = Color.WHITE
+        paintLine.color = resources.getColor(R.color.colorSecondaryDark)
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 8f
 
-        paintText.color = resources.getColor(R.color.colorPrimaryDark)
+        paintText.color = resources.getColor(R.color.colorSecondaryDark)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -103,8 +103,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     }
 
     private fun displayNumberMines(canvas: Canvas?) {
-        for (i in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
-            for (j in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
+        for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
+            for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
                 drawFields(canvas, i, j)
             }
         }
@@ -128,8 +128,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         mine = Bitmap.createScaledBitmap(
             mine, width / MinesweeperModel.numRowsAndColumns, height / MinesweeperModel.numRowsAndColumns, false
         )
-        for (i in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
-            for (j in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
+        for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
+            for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
                 if (MinesweeperModel.fieldMatrix[i][j].isMine) {
                     if (!MinesweeperModel.fieldMatrix[i][j].isFlagged) {
 //                        resetFlag()
@@ -211,12 +211,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         }
     }
 
-    private fun drawGrid(
-        canvas: Canvas?,
-        i: Int,
-        heightOverCols: Int,
-        widthOverRows: Int
-    ) {
+    private fun drawGrid(canvas: Canvas?, i: Int, heightOverCols: Int, widthOverRows: Int) {
         canvas?.drawLine(
             0f,
             (i * heightOverCols).toFloat(),
