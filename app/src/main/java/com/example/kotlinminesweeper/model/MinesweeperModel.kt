@@ -8,6 +8,7 @@ object MinesweeperModel {
     var numRowsAndColumns = 5
     var maxMines = 3
     var flagMode = false
+    var numberUnclickedFields = (numRowsAndColumns * numRowsAndColumns)
 
     var fieldMatrix = plantMines(Array(numRowsAndColumns) {
         Array(numRowsAndColumns) {
@@ -16,7 +17,8 @@ object MinesweeperModel {
                 0,
                 isMine = false,
                 isFlagged = false,
-                wasClicked = false
+                wasClicked = false,
+                drawMine = false
             )
         }
     }, maxMines, numRowsAndColumns)
@@ -24,7 +26,7 @@ object MinesweeperModel {
     fun resetFieldMatrix() {
         fieldMatrix = plantMines(Array(numRowsAndColumns) {
             Array(numRowsAndColumns) {
-                Field(0, 0, isMine = false, isFlagged = false, wasClicked = false)
+                Field(0, 0, isMine = false, isFlagged = false, wasClicked = false, drawMine = false)
             }
         }, maxMines, numRowsAndColumns)
     }

@@ -2,6 +2,7 @@
 
     <string name="app_name">Kotlin Minesweeper</string>
     <string name="game_over">You chose a mine &#8230; game over</string>
+    <string name="game_won">You won the game! All the fields left are mines! Congratulations!</string>
     <string name="flag_mode_on">"Flag Mode On</string>
     <string name="flag_mode_off">Flag Mode Off</string>
     <string name="easy">Easy</string>
