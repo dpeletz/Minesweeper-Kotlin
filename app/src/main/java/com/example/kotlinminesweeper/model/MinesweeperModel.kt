@@ -9,28 +9,22 @@ object MinesweeperModel {
     var maxMines = 3
     var flagMode = false
 
-    var fieldMatrix = plantMines(Array<Array<Field>>(numRowsAndColumns) {
-        Array<Field>(numRowsAndColumns) {
+    var fieldMatrix = plantMines(Array(numRowsAndColumns) {
+        Array(numRowsAndColumns) {
             Field(
                 0,
                 0,
-                false,
-                false,
-                false
+                isMine = false,
+                isFlagged = false,
+                wasClicked = false
             )
         }
     }, maxMines, numRowsAndColumns)
 
     fun resetFieldMatrix() {
-        fieldMatrix = plantMines(Array<Array<Field>>(numRowsAndColumns) {
-            Array<Field>(numRowsAndColumns) {
-                Field(
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                )
+        fieldMatrix = plantMines(Array(numRowsAndColumns) {
+            Array(numRowsAndColumns) {
+                Field(0, 0, isMine = false, isFlagged = false, wasClicked = false)
             }
         }, maxMines, numRowsAndColumns)
     }
@@ -95,7 +89,7 @@ object MinesweeperModel {
         return fieldMatrix
     }
 
-    fun isValid(row: Int, col: Int, numRowsAndColumns: Int): Boolean {
+    private fun isValid(row: Int, col: Int, numRowsAndColumns: Int): Boolean {
         return (row >= 0) && (row < numRowsAndColumns) &&
                 (col >= 0) && (col < numRowsAndColumns)
     }

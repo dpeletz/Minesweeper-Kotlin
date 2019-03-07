@@ -30,20 +30,19 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     )
 
     init {
-        paintBackground.color = resources.getColor(R.color.grey)
+        paintBackground.color = resources.getColor(R.color.colorSecondaryLight)
         paintBackground.style = Paint.Style.FILL
 
         paintLine.color = Color.WHITE
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 8f
 
-        paintText.color = resources.getColor(R.color.navy)
+        paintText.color = resources.getColor(R.color.colorPrimaryDark)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         paintText.textSize = height / (MinesweeperModel.numRowsAndColumns.toFloat())
-
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -56,7 +55,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         val w = View.MeasureSpec.getSize(widthMeasureSpec)
         val h = View.MeasureSpec.getSize(heightMeasureSpec)
         val d = if (w == 0) h else if (h == 0) w else if (w < h) w else h
-
         setMeasuredDimension(d, d)
     }
 
@@ -105,8 +103,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     }
 
     private fun displayNumberMines(canvas: Canvas?) {
-        for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
-            for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
+        for (i in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
+            for (j in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
                 drawFields(canvas, i, j)
             }
         }
@@ -130,8 +128,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         mine = Bitmap.createScaledBitmap(
             mine, width / MinesweeperModel.numRowsAndColumns, height / MinesweeperModel.numRowsAndColumns, false
         )
-        for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
-            for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
+        for (i in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
+            for (j in 0 .. MinesweeperModel.numRowsAndColumns - 1) {
                 if (MinesweeperModel.fieldMatrix[i][j].isMine) {
                     if (!MinesweeperModel.fieldMatrix[i][j].isFlagged) {
 //                        resetFlag()
@@ -182,14 +180,14 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
 
     private fun resetModel() {
         val fieldMatrix =
-            Array<Array<Field>>(MinesweeperModel.numRowsAndColumns) {
-                Array<Field>(MinesweeperModel.numRowsAndColumns) {
+            Array(MinesweeperModel.numRowsAndColumns) {
+                Array(MinesweeperModel.numRowsAndColumns) {
                     Field(
                         0,
                         0,
-                        false,
-                        false,
-                        false
+                        isMine = false,
+                        isFlagged = false,
+                        wasClicked = false
                     )
                 }
             }
@@ -201,7 +199,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
             resources,
             R.drawable.flag
         )
-
     }
 
 
