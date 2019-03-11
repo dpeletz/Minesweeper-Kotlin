@@ -5,10 +5,10 @@ import kotlin.random.Random
 
 object MinesweeperModel {
 
-    var numRowsAndColumns = 5
-    var maxMines = 3
+    var numRowsAndColumns: Int = 5
+    var maxMines: Int = 3
     var flagMode = false
-    var numberUnclickedFields = (numRowsAndColumns * numRowsAndColumns)
+    var numberUnclickedFields = (7*7)
 
     var fieldMatrix = plantMines(Array(numRowsAndColumns) {
         Array(numRowsAndColumns) {
@@ -31,6 +31,12 @@ object MinesweeperModel {
         }, maxMines, numRowsAndColumns)
     }
 
+    fun setNumberMinesAndRows(mines: Int, rows: Int) {
+        MinesweeperModel.maxMines = mines
+        MinesweeperModel.numRowsAndColumns = rows
+        MinesweeperModel.numberUnclickedFields = rows * rows
+    }
+
     private fun incrementMinesAround(fieldMatrix: Array<Array<Field>>, numRowsAndColumns: Int) {
         val random = Random.nextInt(numRowsAndColumns * numRowsAndColumns)
         countMinesAround(fieldMatrix, random / numRowsAndColumns, random.rem(numRowsAndColumns), numRowsAndColumns)
@@ -43,6 +49,9 @@ object MinesweeperModel {
             incrementMineCountByColumn(randRow, randCol + 1, numRowsAndColumns, fieldMatrix)
             incrementMineCountByRow(randRow, randCol, numRowsAndColumns, fieldMatrix)
             incrementMineCountByColumn(randRow, randCol - 1, numRowsAndColumns, fieldMatrix)
+        }
+        else {
+            incrementMinesAround(fieldMatrix, numRowsAndColumns)
         }
     }
 
@@ -93,5 +102,4 @@ object MinesweeperModel {
     fun toggleFlagMode() {
         flagMode = !flagMode
     }
-
 }
