@@ -11,11 +11,13 @@
         android:background="@color/colorPrimaryLight">
 
     <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:shimmer_duration="2000">
 
         <TextView
-                android:id="@+id/tvStatus"
+                android:id="@+id/tv_status"
                 android:textSize="30sp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/colorSecondaryDark"

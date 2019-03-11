@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity() {
         val easyIntent = Intent(this, MinesweeperActivity::class.java)
         btnEasyActivity.setOnClickListener {
             MinesweeperModel.setNumberMinesAndRows(3, 5)
-//            MinesweeperModel.numRowsAndColumns = 5
-//            MinesweeperModel.maxMines = 3
             MinesweeperModel.resetFieldMatrix()
             startActivity(easyIntent)
         }
@@ -34,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         val mediumIntent = Intent(this, MinesweeperActivity::class.java)
         btnMediumActivity.setOnClickListener {
             MinesweeperModel.setNumberMinesAndRows(6, 6)
-//            MinesweeperModel.numRowsAndColumns = 6
-//            MinesweeperModel.maxMines = 6
             MinesweeperModel.resetFieldMatrix()
             startActivity(mediumIntent)
         }
@@ -46,8 +42,6 @@ class MainActivity : AppCompatActivity() {
         val hardIntent = Intent(this, MinesweeperActivity::class.java)
         btnHardActivity.setOnClickListener {
             MinesweeperModel.setNumberMinesAndRows(9, 7)
-//            MinesweeperModel.numRowsAndColumns = 7
-//            MinesweeperModel.maxMines = 9
             MinesweeperModel.resetFieldMatrix()
             startActivity(hardIntent)
         }
