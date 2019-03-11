@@ -2,8 +2,8 @@ package com.example.kotlinminesweeper.view
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.Color.RED
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -95,9 +95,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     private fun drawLines(canvas: Canvas?) {
         val heightOverCols = height / MinesweeperModel.numRowsAndColumns
         val widthOverRows = width / MinesweeperModel.numRowsAndColumns
-        for (i in 0..MinesweeperModel.numRowsAndColumns) {
-            drawGrid(canvas, i, heightOverCols, widthOverRows)
-        }
+        for (i in 0..MinesweeperModel.numRowsAndColumns) drawGrid(canvas, i, heightOverCols, widthOverRows)
     }
 
     private fun drawGameBoard(canvas: Canvas?) {
@@ -124,9 +122,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
             }, MinesweeperModel.maxMines, MinesweeperModel.numRowsAndColumns
         )
         MinesweeperModel.fieldMatrix = fieldMatrix
-//        MinesweeperModel.fieldMatrix =
-//            MinesweeperModel.plantMines(fieldMatrix, MinesweeperModel.maxMines, MinesweeperModel.numRowsAndColumns)
-        MinesweeperModel.numberUnclickedFields = MinesweeperModel.numRowsAndColumns * MinesweeperModel.numRowsAndColumns
+        MinesweeperModel.numUnclickedFields = MinesweeperModel.numRowsAndColumns * MinesweeperModel.numRowsAndColumns
     }
 
     private fun drawFlag(canvas: Canvas?, i: Int, j: Int) {
@@ -144,8 +140,8 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     private fun drawNumberSurroundingMines(canvas: Canvas?, i: Int, j: Int) {
         canvas?.drawText(
             "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
-            (((width / MinesweeperModel.numRowsAndColumns.toFloat()) * (i))),
-            ((height / MinesweeperModel.numRowsAndColumns.toFloat()) * (j + 1)) - paintLine.textSize,
+            ((width / MinesweeperModel.numRowsAndColumns.toFloat() * i) + (paintText.textSize / MinesweeperModel.numRowsAndColumns)),
+            ((height / MinesweeperModel.numRowsAndColumns.toFloat() * j) + paintText.textSize - paintLine.textSize),
             paintText
         )
     }
@@ -160,39 +156,30 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         } else if (MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
             finishGameWithLoss(canvas)
         }
-
-        if (MinesweeperModel.numberUnclickedFields == MinesweeperModel.maxMines) finishGameWithWin(canvas)
+        if (MinesweeperModel.numUnclickedFields == MinesweeperModel.maxMines) finishGameWithWin(canvas)
     }
 
     private fun finishGameWithWin(canvas: Canvas?) {
         replaceFlagWithMineOnWin()
-        showMines(canvas)
         generateSnackbar(resources.getString(R.string.game_won))
-        Timer().schedule(6000) {
+        delayGameEnding(6000, canvas)
+    }
+
+    private fun delayGameEnding(delay: Long, canvas: Canvas?) {
+        showMines(canvas)
+        Timer().schedule(delay) {
             resetModel()
             invalidate()
         }
     }
 
     private fun finishGameWithLoss(canvas: Canvas?) {
-        if (MinesweeperModel.numberUnclickedFields != MinesweeperModel.maxMines) loseGame(canvas)
+        if (MinesweeperModel.numUnclickedFields != MinesweeperModel.maxMines) loseGame(canvas)
     }
 
     private fun loseGame(canvas: Canvas?) {
         generateSnackbar(resources.getString(R.string.game_over))
-        showMines(canvas)
-        Timer().schedule(4000) {
-            resetModel()
-            invalidate()
-        }
-    }
-
-    private fun displayNumberMines(canvas: Canvas?) {
-        for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
-            for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
-                drawFields(canvas, i, j)
-            }
-        }
+        delayGameEnding(4000, canvas)
     }
 
     private fun clickField(tX: Int, tY: Int) {
@@ -202,7 +189,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
     private fun clickWhenNotInFlagMode(tX: Int, tY: Int) {
         if (tX < MinesweeperModel.numRowsAndColumns && tY < MinesweeperModel.numRowsAndColumns && !MinesweeperModel.fieldMatrix[tX][tY].wasClicked && !MinesweeperModel.fieldMatrix[tX][tY].isFlagged) {
             MinesweeperModel.fieldMatrix[tX][tY].wasClicked = !MinesweeperModel.fieldMatrix[tX][tY].wasClicked
-            MinesweeperModel.numberUnclickedFields -= 1
+            MinesweeperModel.numUnclickedFields -= 1
             invalidate()
         }
         invalidate()
@@ -218,10 +205,19 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         }
     }
 
+    private fun displayNumberMines(canvas: Canvas?) {
+        showMinesOrDisplayMineCount(0, canvas)
+    }
+
     private fun showMines(canvas: Canvas?) {
+        showMinesOrDisplayMineCount(1, canvas)
+    }
+
+    private fun showMinesOrDisplayMineCount(function: Int, canvas: Canvas?) {
         for (i in 0..MinesweeperModel.numRowsAndColumns - 1) {
             for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
-                generateMine(i, j, canvas)
+                if (function == 0) drawFields(canvas, i, j)
+                if (function == 1) generateMine(i, j, canvas)
             }
         }
     }
@@ -264,6 +260,3 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         invalidate()
     }
 }
-
-
-

@@ -20,7 +20,6 @@ class MinesweeperActivity : AppCompatActivity() {
         switch_button.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 toggleOn()
-
             } else {
                 toggleOff()
             }
@@ -45,4 +44,3 @@ class MinesweeperActivity : AppCompatActivity() {
         MinesweeperModel.toggleFlagMode()
     }
 }
-

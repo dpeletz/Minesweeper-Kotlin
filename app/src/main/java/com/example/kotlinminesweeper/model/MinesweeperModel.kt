@@ -8,18 +8,11 @@ object MinesweeperModel {
     var numRowsAndColumns: Int = 5
     var maxMines: Int = 3
     var flagMode = false
-    var numberUnclickedFields = (7*7)
+    var numUnclickedFields = (7 * 7)
 
     var fieldMatrix = plantMines(Array(numRowsAndColumns) {
         Array(numRowsAndColumns) {
-            Field(
-                0,
-                0,
-                isMine = false,
-                isFlagged = false,
-                wasClicked = false,
-                drawMine = false
-            )
+            Field(0, 0, isMine = false, isFlagged = false, wasClicked = false, drawMine = false)
         }
     }, maxMines, numRowsAndColumns)
 
@@ -34,7 +27,7 @@ object MinesweeperModel {
     fun setNumberMinesAndRows(mines: Int, rows: Int) {
         MinesweeperModel.maxMines = mines
         MinesweeperModel.numRowsAndColumns = rows
-        MinesweeperModel.numberUnclickedFields = rows * rows
+        MinesweeperModel.numUnclickedFields = rows * rows
     }
 
     private fun incrementMinesAround(fieldMatrix: Array<Array<Field>>, numRowsAndColumns: Int) {
@@ -49,8 +42,7 @@ object MinesweeperModel {
             incrementMineCountByColumn(randRow, randCol + 1, numRowsAndColumns, fieldMatrix)
             incrementMineCountByRow(randRow, randCol, numRowsAndColumns, fieldMatrix)
             incrementMineCountByColumn(randRow, randCol - 1, numRowsAndColumns, fieldMatrix)
-        }
-        else {
+        } else {
             incrementMinesAround(fieldMatrix, numRowsAndColumns)
         }
     }
@@ -61,14 +53,17 @@ object MinesweeperModel {
         numRowsAndColumns: Int,
         fieldMatrix: Array<Array<Field>>
     ) {
-        if (isValid(randRow, randCol - 1, numRowsAndColumns)) {
-            fieldMatrix[randRow][randCol - 1].minesAround =
-                fieldMatrix[randRow][randCol - 1].minesAround + 1
-        }
-        if (isValid(randRow, randCol + 1, numRowsAndColumns)) {
-            fieldMatrix[randRow][randCol + 1].minesAround =
-                fieldMatrix[randRow][randCol + 1].minesAround + 1
-        }
+        if (isValid(randRow, randCol - 1, numRowsAndColumns)) incrementFieldMineCount(fieldMatrix, randRow, randCol - 1)
+        if (isValid(randRow, randCol + 1, numRowsAndColumns)) incrementFieldMineCount(fieldMatrix, randRow, randCol + 1)
+    }
+
+    private fun incrementFieldMineCount(
+        fieldMatrix: Array<Array<Field>>,
+        randRow: Int,
+        randCol: Int
+    ) {
+        fieldMatrix[randRow][randCol].minesAround =
+            fieldMatrix[randRow][randCol].minesAround + 1
     }
 
     private fun incrementMineCountByColumn(
@@ -77,26 +72,18 @@ object MinesweeperModel {
         numRowsAndColumns: Int,
         fieldMatrix: Array<Array<Field>>
     ) {
-        if (isValid(randRow - 1, randCol, numRowsAndColumns)) {
-            fieldMatrix[randRow - 1][randCol].minesAround =
-                fieldMatrix[randRow - 1][randCol].minesAround + 1
-        }
-        if (isValid(randRow + 1, randCol, numRowsAndColumns)) {
-            fieldMatrix[randRow + 1][randCol].minesAround =
-                fieldMatrix[randRow + 1][randCol].minesAround + 1
-        }
+        if (isValid(randRow - 1, randCol, numRowsAndColumns)) incrementFieldMineCount(fieldMatrix, randRow - 1, randCol)
+        if (isValid(randRow + 1, randCol, numRowsAndColumns)) incrementFieldMineCount(fieldMatrix, randRow + 1, randCol)
     }
 
     fun plantMines(fieldMatrix: Array<Array<Field>>, maxMines: Int, numRowsAndColumns: Int): Array<Array<Field>> {
-        for (i in 0..(maxMines - 1)) {
-            incrementMinesAround(fieldMatrix, numRowsAndColumns)
-        }
+        for (i in 0..(maxMines - 1)) incrementMinesAround(fieldMatrix, numRowsAndColumns)
         return fieldMatrix
     }
 
     private fun isValid(row: Int, col: Int, numRowsAndColumns: Int): Boolean {
-        return (row >= 0) && (row < numRowsAndColumns) &&
-                (col >= 0) && (col < numRowsAndColumns)
+        return ((row >= 0) && (row < numRowsAndColumns) &&
+                (col >= 0) && (col < numRowsAndColumns))
     }
 
     fun toggleFlagMode() {
