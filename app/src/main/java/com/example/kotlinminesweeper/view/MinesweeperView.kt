@@ -141,7 +141,7 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         canvas?.drawText(
             "${MinesweeperModel.fieldMatrix[i][j].minesAround}",
             ((width / MinesweeperModel.numRowsAndColumns.toFloat() * i) + (paintText.textSize / MinesweeperModel.numRowsAndColumns)),
-            ((height / MinesweeperModel.numRowsAndColumns.toFloat() * (j+1)) - paintLine.textSize),
+            ((height / MinesweeperModel.numRowsAndColumns.toFloat() * (j + 1)) - paintLine.textSize),
             paintText
         )
     }
@@ -154,22 +154,11 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
         } else if (MinesweeperModel.fieldMatrix[i][j].isFlagged) {
             drawFlag(canvas, i, j)
         } else if (MinesweeperModel.fieldMatrix[i][j].isMine && MinesweeperModel.fieldMatrix[i][j].wasClicked) {
-//        } else if (MinesweeperModel.fieldMatrix[i][j].wasClicked) {
-//        } else if (MinesweeperModel.fieldMatrix[i][j].isMine) {
             finishGameWithLoss(canvas)
-//        } else if ((MinesweeperModel.numUnclickedFields == MinesweeperModel.maxMines) (!MinesweeperModel.fieldMatrix[i][j].isMine) && (MinesweeperModel.fieldMatrix[i][j].wasClicked)) {
         }
 
-        if (MinesweeperModel.fieldMatrix[i][j].wasClicked) {
-            if ((MinesweeperModel.numUnclickedFields == MinesweeperModel.maxMines) && (!MinesweeperModel.fieldMatrix[i][j].isMine)) {
-                println("-----")
-                println(MinesweeperModel.numUnclickedFields)
-                println(MinesweeperModel.fieldMatrix[i][j].isMine)
-                println("$i, $j")
-                println("WIN")
-                println("-----")
-                finishGameWithWin(canvas)
-            }
+        if ((MinesweeperModel.numUnclickedFields == MinesweeperModel.maxMines) && (!MinesweeperModel.fieldMatrix[i][j].isMine) && (MinesweeperModel.fieldMatrix[i][j].wasClicked)) {
+            finishGameWithWin(canvas)
         }
     }
 
@@ -233,7 +222,6 @@ class MinesweeperView(context: Context?, attrs: AttributeSet?) : View(context, a
             for (j in 0..MinesweeperModel.numRowsAndColumns - 1) {
                 if (function == 0) drawFields(canvas, i, j)
                 if (function == 1) generateMine(i, j, canvas)
-                if (MinesweeperModel.fieldMatrix[i][j].isMine) println("$i, $j")
             }
         }
     }

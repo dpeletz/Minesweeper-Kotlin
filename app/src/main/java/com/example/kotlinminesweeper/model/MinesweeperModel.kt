@@ -37,7 +37,6 @@ object MinesweeperModel {
 
     private fun countMinesAround(fieldMatrix: Array<Array<Field>>, randRow: Int, randCol: Int, numRowsAndColumns: Int) {
         if (!fieldMatrix[randRow][randCol].isMine) {
-//            println("$randCol, $randRow")
             fieldMatrix[randRow][randCol].isMine = !fieldMatrix[randRow][randCol].isMine
             incrementMineCountByColumn(randRow, randCol, numRowsAndColumns, fieldMatrix)
             incrementMineCountByColumn(randRow, randCol + 1, numRowsAndColumns, fieldMatrix)
